@@ -14,7 +14,7 @@ object MnMcount extends App {
     .option("inferSchema", true)
     .csv("src/main/scala/resources/chapter2/mnm_dataset.csv")
 
-  mnm.show()
+  mnm.show(10, false)
 
 
 
