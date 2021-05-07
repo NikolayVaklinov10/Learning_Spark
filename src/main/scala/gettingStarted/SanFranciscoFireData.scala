@@ -69,6 +69,12 @@ object SanFranciscoFireData extends App {
   fireDF.select("CallType")
     .where(col("CallType").isNotNull)
     .distinct()
-    .show(10, false)
+//    .show(10, false)
+
+  // showing the high response time data first 5
+  val newFireDF = fireDF.withColumnRenamed("Delay", "ResponseDelayedInMins")
+    .select("ResponseDelayedInMins")
+    .where(col("ResponseDelayedInMins") > 5)
+    .show(5, false)
 
 }
