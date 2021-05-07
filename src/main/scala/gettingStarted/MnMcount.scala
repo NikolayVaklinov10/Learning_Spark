@@ -31,8 +31,18 @@ object MnMcount extends App {
   .agg(count("Count").alias("Total"))
   .orderBy(desc("Total"))
   // Show the aggregate results for all states and colors
-  countMnMDF.show(60)
-  println(s"Total Rows = ${countMnMDF.count()}")
+//  countMnMDF.show(60)
+//  println(s"Total Rows = ${countMnMDF.count()}")
 
+  // finding only Cali's data
+
+  val CAcountMnMDF = mnmDF.
+    select("State", "Color", "Count")
+    .where(col("State") === "CA")
+    .groupBy("State", "Color")
+    .agg(count("Count").alias("Total"))
+    .orderBy(desc("Total"))
+  // Showing the California's results
+  CAcountMnMDF.show(10)
 
 }
