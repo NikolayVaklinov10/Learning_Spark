@@ -2,7 +2,7 @@ package gettingStarted
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.dsl.expressions.{DslExpression, StringToAttributeConversionHelper}
-import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.functions.{col, countDistinct}
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, StringType, StructField, StructType}
 
 object SanFranciscoFireData extends App {
@@ -57,8 +57,18 @@ object SanFranciscoFireData extends App {
   val fewFireDF = fireDF
     .select("IncidentNumber", "AvailableDtTm", "CallType")
     .where(col("CallType") =!= "Medical Incident")
-    .show(5, false)
+//    .show(5, false)
 
+  // the number of distinct calls
+  fireDF.select("CallType")
+    .where(col("CallType").isNotNull)
+    .agg(countDistinct("CallType") as "DistinctCallType")
+//    .show()
 
+  // the distinct call types list
+  fireDF.select("CallType")
+    .where(col("CallType").isNotNull)
+    .distinct()
+    .show(10, false)
 
 }
