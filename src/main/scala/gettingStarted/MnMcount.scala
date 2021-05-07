@@ -14,7 +14,13 @@ object MnMcount extends App {
     .option("inferSchema", true)
     .csv("src/main/scala/resources/chapter2/mnm_dataset.csv")
 
-  mnm.show(10, false)
+  // first 10 rows of csv
+  val mnmText = spark.read
+    .option("inferSchema", true)
+    .text("src/main/scala/resources/chapter2/README.md")
+
+  // the first 10 rows of a text
+  mnmText.show(10, false)
 
 
 
