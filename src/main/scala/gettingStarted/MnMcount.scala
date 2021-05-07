@@ -5,6 +5,7 @@ import org.apache.spark.sql.functions.{col, desc}
 
 object MnMcount extends App {
 
+  // setting the spark session
   val spark = SparkSession.builder()
     .appName("MnMCount")
     .master("local[*]")
