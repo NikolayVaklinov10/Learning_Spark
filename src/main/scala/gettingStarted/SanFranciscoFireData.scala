@@ -75,6 +75,17 @@ object SanFranciscoFireData extends App {
   val newFireDF = fireDF.withColumnRenamed("Delay", "ResponseDelayedInMins")
     .select("ResponseDelayedInMins")
     .where(col("ResponseDelayedInMins") > 5)
-    .show(5, false)
+//    .show(5, false)
+
+  // What were all the different types of fire call 2018
+  val diffCallFireDF = fireDF.select("CallType")
+    .where(col("CallType").isNotNull && col("CallType") === "2018")
+    .distinct()
+    .show(10, false)
+
+
+
+
+
 
 }
