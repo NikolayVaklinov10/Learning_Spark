@@ -22,11 +22,21 @@ object BasicQuery extends App {
   // Create a temporary view
   df.createOrReplaceTempView("us_delay_flights_tbl")
 
+//  spark.sql(
+//    """
+//      |SELECT distance, origin, destination
+//      |FROM us_delay_flights_tbl WHERE distance > 1000
+//      |ORDER BY distance DESC
+//      |""".stripMargin).show(10)
+
+  // Find all flights with more than 2 hour delay between Chicago(ORD) and San Francisco (SFO)
   spark.sql(
     """
-      |SELECT distance, origin, destination
-      |FROM us_delay_flights_tbl WHERE distance > 1000
-      |ORDER BY distance DESC
+      |SELECT date, delay, origin, destination
+      |FROM us_delay_flights_tbl
+      |WHERE delay > 120 AND ORIGIN = 'SFO' AND DESTINATION = 'ORD'
+      |ORDER BY delay DESC
       |""".stripMargin).show(10)
+
 
 }
