@@ -32,4 +32,11 @@ object Flights extends App {
     .withColumn("distance", expr("CAST(distance as INT) as distance"))
   delays.createOrReplaceTempView("departureDelays")
 
+  // Create temporary small table
+  val foo = delays.filter(
+    expr(
+      """origin == 'SEA' AND destination == 'SFO' AND
+        | date like '01010%' AND delay > 0 """.stripMargin))
+  foo.createOrReplaceTempView("foo")
+
 }
