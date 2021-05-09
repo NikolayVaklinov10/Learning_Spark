@@ -15,5 +15,12 @@ object Flights extends App {
     .appName("FlightsApp")
     .getOrCreate()
 
+  // Obtain airport data set
+  val airport = spark.read
+    .option("header", true)
+    .option("inferSchema", true)
+    .option("delimiter", "\t")
+    .csv(airportPath)
+  airport.createOrReplaceTempView("airports_na")
 
 }
