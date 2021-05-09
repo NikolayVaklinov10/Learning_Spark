@@ -6,6 +6,9 @@ object Datasets extends App {
   case class Bloggers(id:Int, first:String, last:String, url:String, date:String, hits: Int, campaigns:Array[String])
 
 
+  // initializing a value for the blogger
+  val bloggers = "src/main/scala/resources/chapter2/blogs.json"
+
 
 
 }
