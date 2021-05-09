@@ -1,6 +1,7 @@
 package externalDataSources
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.expr
 
 object Flights extends App {
 
@@ -22,5 +23,13 @@ object Flights extends App {
     .option("delimiter", "\t")
     .csv(airportPath)
   airport.createOrReplaceTempView("airports_na")
+
+  // Obtain departure Delays data set
+  val delays = spark.read
+    .option("header", true)
+    .csv(delaysPath)
+    .withColumn("delay", expr("CAST(delay as INT) as delay"))
+    .withColumn("distance", expr("CAST(distance as INT) as distance"))
+  delays.createOrReplaceTempView("departureDelays")
 
 }
