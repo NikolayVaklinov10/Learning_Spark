@@ -1,6 +1,7 @@
 package externalDataSources
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.dsl.expressions.{DslExpression, StringToAttributeConversionHelper}
 import org.apache.spark.sql.functions.expr
 
 object Flights extends App {
@@ -61,6 +62,24 @@ object Flights extends App {
       |   AND date LIKE '01010%'
       |   AND delay > 0
       |""".stripMargin).show()
+
+  // Join Departure Delays data (foo) with flight info
+//  foo.join(
+//    airport.as('air),
+//    $"air.IATA" === $"origin"
+//  ).select("City", "State", "date", "delay", "distance", "destination").show()
+
+  spark.sql("DROP TABLE IF EXISTS departureDelaysWindow")
+  spark.sql("""
+CREATE TABLE departureDelaysWindow AS
+SELECT origin, destination, sum(delay) as TotalDelays
+  FROM departureDelays
+ WHERE origin IN ('SEA', 'SFO', 'JFK')
+   AND destination IN ('SEA', 'SFO', 'JFK', 'DEN', 'ORD', 'LAX', 'ATL')
+ GROUP BY origin, destination
+""")
+
+  spark.sql("""SELECT * FROM departureDelaysWindow""").show()
 
 
 
