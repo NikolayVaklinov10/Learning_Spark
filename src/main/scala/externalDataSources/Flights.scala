@@ -39,4 +39,6 @@ object Flights extends App {
         | date like '01010%' AND delay > 0 """.stripMargin))
   foo.createOrReplaceTempView("foo")
 
+  spark.sql("SELECT * FROM airports_na LIMIT 10").show()
+
 }
