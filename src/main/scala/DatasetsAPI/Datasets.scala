@@ -17,6 +17,14 @@ object Datasets extends App {
   // initializing a value for the blogger
   val bloggers = "src/main/scala/resources/chapter2/blogs.json"
 
+  // the implicits needed
+  import spark.implicits._
+  // making the dataset
+  val bloggersDS = spark.read
+    .format("json")
+    .option("path", bloggers)
+    .load().as[Bloggers]
+
 
 
 }
