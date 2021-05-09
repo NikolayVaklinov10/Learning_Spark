@@ -39,12 +39,30 @@ object Flights extends App {
         | date like '01010%' AND delay > 0 """.stripMargin))
   foo.createOrReplaceTempView("foo")
 
-//  spark.sql("SELECT * FROM airports_na LIMIT 10").show()
+  spark.sql("SELECT * FROM airports_na LIMIT 10").show()
 
 
-//  spark.sql("SELECT * FROM departureDelays LIMIT 10").show()
+  spark.sql("SELECT * FROM departureDelays LIMIT 10").show()
 
-//  spark.sql("SELECT * FROM foo").show()
+  spark.sql("SELECT * FROM foo").show()
+
+
+  // Union two tables
+  val bar = delays.union(foo)
+  bar.createOrReplaceTempView("bar")
+  bar.filter(expr("""origin == 'SEA' AND destination == 'SFO' AND date LIKE '0101010%' AND delay > 0 """)).show()
+
+  spark.sql(
+    """
+      |SELECT *
+      |FROM bar
+      |WHERE origin = 'SEA'
+      |   AND destination = 'SFO'
+      |   AND date LIKE '01010%'
+      |   AND delay > 0
+      |""".stripMargin).show()
+
+
 
 
 }
