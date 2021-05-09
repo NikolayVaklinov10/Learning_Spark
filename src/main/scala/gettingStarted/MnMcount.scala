@@ -44,5 +44,6 @@ object MnMcount extends App {
     .orderBy(desc("Total"))
   // Showing the California's results
   CAcountMnMDF.show(10)
+  spark.stop()
 
 }
