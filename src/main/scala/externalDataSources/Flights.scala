@@ -42,5 +42,9 @@ object Flights extends App {
 //  spark.sql("SELECT * FROM airports_na LIMIT 10").show()
 
 
-  spark.sql("SELECT * FROM departureDelays LIMIT 10").show()
+//  spark.sql("SELECT * FROM departureDelays LIMIT 10").show()
+
+//  spark.sql("SELECT * FROM foo").show()
+
+
 }
