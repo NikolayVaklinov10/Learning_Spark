@@ -1,6 +1,7 @@
 package DatasetsAPI
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.desc
 
 object Datasets extends App {
 
@@ -39,8 +40,12 @@ object Datasets extends App {
   // Create a Dataset of Usage typed data
   import spark.implicits._
   val dsUsage = spark.createDataset(data)
-  dsUsage.show(10)
+//  dsUsage.show(10)
 
+  // higher-oder functions
+  dsUsage.filter(d => d.usage > 900)
+    .orderBy(desc("usage"))
+    .show(5, false)
 
 
 }
