@@ -69,17 +69,18 @@ object Flights extends App {
 //    $"air.IATA" === $"origin"
 //  ).select("City", "State", "date", "delay", "distance", "destination").show()
 
-  spark.sql("DROP TABLE IF EXISTS departureDelaysWindow")
-  spark.sql("""
-CREATE TABLE departureDelaysWindow AS
-SELECT origin, destination, sum(delay) as TotalDelays
-  FROM departureDelays
- WHERE origin IN ('SEA', 'SFO', 'JFK')
-   AND destination IN ('SEA', 'SFO', 'JFK', 'DEN', 'ORD', 'LAX', 'ATL')
- GROUP BY origin, destination
-""")
+//  spark.sql("DROP TABLE IF EXISTS departureDelaysWindow")
+//  spark.sql("""
+//CREATE TABLE departureDelaysWindow AS
+//SELECT origin, destination, sum(delay) as TotalDelays
+//  FROM departureDelays
+// WHERE origin IN ('SEA', 'SFO', 'JFK')
+//   AND destination IN ('SEA', 'SFO', 'JFK', 'DEN', 'ORD', 'LAX', 'ATL')
+// GROUP BY origin, destination
+//""")
+//
+//  spark.sql("""SELECT * FROM departureDelaysWindow""").show()
 
-  spark.sql("""SELECT * FROM departureDelaysWindow""").show()
 
 
 
