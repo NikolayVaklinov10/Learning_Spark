@@ -47,7 +47,11 @@ libraryDependencies ++= Seq(
 
   // kafka
   "org.apache.kafka" %% "kafka" % kafkaVersion,
-  "org.apache.kafka" % "kafka-streams" % kafkaVersion
+  "org.apache.kafka" % "kafka-streams" % kafkaVersion,
+
+  // delta lake
+  "io.delta" %% "delta-core" % "0.7.0"
+
 )
 
 
