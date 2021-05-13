@@ -15,9 +15,13 @@ object MachineLearning extends App {
   // importing the data set
   val filePath = "src/main/scala/resources/chapter2/sf-airbnb/sf-airbnb-clean.parquet/"
 
-  val airbnb = spark.read.parquet(filePath)
+  val airbnbDF = spark.read.parquet(filePath)
 
-  airbnb
-    .select("neighbourhood_cleansed",
-      "room_type", "bedrooms", "bathrooms", "number_of_reviews", "price").show(5)
+  airbnbDF.select("neighbourhood_cleansed", "room_type", "bedrooms", "bathrooms", "number_of_reviews", "price").show(5)
+
+  // splitting the dataset and showing the number of records
+  val Array(trainDF, testDF) = airbnbDF.randomSplit(Array(.8,.2), seed=42)
+  println(f"""There are ${trainDF.count} rows in the training set, and ${testDF.count} in the test set""")
+
+
 }
