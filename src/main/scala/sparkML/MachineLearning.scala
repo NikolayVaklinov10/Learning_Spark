@@ -11,4 +11,8 @@ object MachineLearning extends App {
     .appName("AirBnBModel")
     .getOrCreate()
 
+
+  // importing the data set
+  val filePath = "src/main/scala/resources/chapter2/sf-airbnb-clean.parquet"
+
 }
