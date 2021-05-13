@@ -30,6 +30,9 @@ object DeltaLake extends App {
     .load(deltaPath)
     .createOrReplaceTempView("loans_delta")
 
+  // Loans row count
+  spark.sql("SELECT count(*) FROM loans_delta").show()
+
 
 
 
