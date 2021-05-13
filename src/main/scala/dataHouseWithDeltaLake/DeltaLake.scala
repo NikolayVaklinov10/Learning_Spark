@@ -16,6 +16,14 @@ object DeltaLake extends App {
     .appName("DeltaLake")
     .getOrCreate()
 
+  // Create the Delta table with the same loans data
+  spark.read
+    .format("parquet")
+    .load(sourcePath)
+    .write
+    .format("delta")
+    .save(deltaPath)
+
 
 
 
