@@ -24,6 +24,11 @@ object DeltaLake extends App {
     .format("delta")
     .save(deltaPath)
 
+  // Create a view on the delta called loans_delta
+  spark.read
+    .format("delta")
+    .load(deltaPath)
+    .createOrReplaceTempView("loans_delta")
 
 
 
