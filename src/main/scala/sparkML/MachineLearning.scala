@@ -33,4 +33,5 @@ object MachineLearning extends App {
   vecTrainDF.select("bedrooms","features","price").show(10)
 
 
+
 }
