@@ -2,6 +2,7 @@ package sparkML
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.regression.LinearRegression
 
 
 object MachineLearning extends App {
@@ -31,6 +32,12 @@ object MachineLearning extends App {
     .setOutputCol("features")
   val vecTrainDF = vecAssembler.transform(trainDF)
   vecTrainDF.select("bedrooms","features","price").show(10)
+
+  // Using Estimators to Build Models
+  val lr = new LinearRegression()
+    .setFeaturesCol("features")
+    .setLabelCol("price")
+  val lrModel = lr.fit(vecTrainDF)
 
 
 
