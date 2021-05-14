@@ -1,6 +1,8 @@
 package sparkML
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.ml.feature.VectorAssembler
+
 
 object MachineLearning extends App {
 
@@ -22,6 +24,13 @@ object MachineLearning extends App {
   // splitting the dataset and showing the number of records
   val Array(trainDF, testDF) = airbnbDF.randomSplit(Array(.8,.2), seed=42)
   println(f"""There are ${trainDF.count} rows in the training set, and ${testDF.count} in the test set""")
+
+  // preparing feature for the ML model with transform()
+  val vecAssembler = new VectorAssembler()
+    .setInputCols(Array("bedrooms"))
+    .setOutputCol("features")
+  val vecTrainDF = vecAssembler.transform(trainDF)
+  vecTrainDF.select("bedrooms","features","price").show(10)
 
 
 }
