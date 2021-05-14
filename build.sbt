@@ -50,7 +50,11 @@ libraryDependencies ++= Seq(
   "org.apache.kafka" % "kafka-streams" % kafkaVersion,
 
   // delta lake
-  "io.delta" %% "delta-core" % "0.7.0"
+  "io.delta" %% "delta-core" % "0.7.0",
+
+  // spark ML
+  "org.apache.spark" %% "spark-mllib" % sparkVersion
+
 
 )
 
