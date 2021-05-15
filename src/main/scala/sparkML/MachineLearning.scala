@@ -51,6 +51,13 @@ object MachineLearning extends App {
   val pipeline = new Pipeline().setStages(Array(vecAssembler, lr))
   val pipelineModel = pipeline.fit(trainDF)
 
+  // the transformer bit
+  val predDF = pipelineModel.transform(testDF)
+  predDF.select("bedrooms", "features", "price", "prediction").show(10)
+
+  // all the feature preparation and model building into the pipeline
+
+
 
 
 
