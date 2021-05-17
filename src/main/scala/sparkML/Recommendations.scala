@@ -32,6 +32,10 @@ object Recommendations {
       (user.toInt, artist.toInt)
     }.toDF("user", "artist")
 
+    // the following code querying through a couple of millions of records
+    userArtistDF.agg(
+      min("user"), max("user"), min("artist"), max("artist")).show()
+
 
 
 
