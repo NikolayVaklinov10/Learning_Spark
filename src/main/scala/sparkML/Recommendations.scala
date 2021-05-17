@@ -33,8 +33,8 @@ object Recommendations {
     }.toDF("user", "artist")
 
     // the following code querying through a couple of millions of records
-    userArtistDF.agg(
-      min("user"), max("user"), min("artist"), max("artist")).show()
+//    userArtistDF.agg(
+//      min("user"), max("user"), min("artist"), max("artist")).show()
 
     val rawArtistData = spark.read.textFile("src/main/scala/resources/chapter2/profiledata_06-May-2005/artist_data.txt")
 
@@ -57,6 +57,21 @@ object Recommendations {
         }
       }
     }.toDF("id", "name")
+
+    // the alias artist dataset
+    val rawArtistAlias = spark.read.textFile("src/main/scala/resources/chapter2/profiledata_06-May-2005/artist_alias.txt")
+    val artistAlias = rawArtistAlias.flatMap { line =>
+      val Array(artist, alias) = line.split('\t')
+      if (artist.isEmpty) {
+        None
+      } else {
+        Some((artist.toInt, alias.toInt))
+      }
+    }.collect().toMap
+
+    artistAlias.head
+
+    artistByID.filter($"id" isin(1208690, 1003926)).show()
 
 
 
