@@ -38,11 +38,25 @@ object Recommendations {
 
     val rawArtistData = spark.read.textFile("src/main/scala/resources/chapter2/profiledata_06-May-2005/artist_data.txt")
 
-    // the following will fail due to map function
-    rawArtistData.map { line =>
+//    // the following will fail due to map function
+//    rawArtistData.map { line =>
+//      val (id, name) = line.span(_ != '\t')
+//      (id.toInt, name.trim)
+//    }.count()
+
+    // Better version
+    val artistByID = rawArtistData.flatMap { line =>
       val (id, name) = line.span(_ != '\t')
-      (id.toInt, name.trim)
-    }.count()
+      if (name.isEmpty) {
+        None
+      } else {
+        try {
+          Some((id.toInt, name.trim))
+        } catch {
+          case _: NumberFormatException => None
+        }
+      }
+    }.toDF("id", "name")
 
 
 
