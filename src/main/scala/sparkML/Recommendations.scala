@@ -19,19 +19,19 @@ object Recommendations {
       .appName("Audio Recommendation ML App")
       .getOrCreate()
 
-    val rawUserArtistData = "src/main/scala/resources/chapter2/profiledata_06-May-2005/user_artist_data.txt"
 
-    val rawUserArtistDataDF = spark.read.textFile(rawUserArtistData)
+    val rawUserArtistData = spark.read.textFile("src/main/scala/resources/chapter2/profiledata_06-May-2005/user_artist_data.txt")
 
-    //    rawUserArtistDataDF.take(5).foreach(println)
+//        rawUserArtistData.take(5).foreach(println)
 
-
-    // Note the following will fail
+    // the following import is required
     import spark.implicits._
-    rawUserArtistDataDF.map { line =>
-      val (id, name) = line.span(_ != '\t')
-      (id.toInt, name.trim)
-    }.count()
+    // a little change of the structure of the data
+    val userArtistDF = rawUserArtistData.map{ line =>
+      val Array(user, artist, _*) = line.split(' ')
+      (user.toInt, artist.toInt)
+    }.toDF("user", "artist")
+
 
 
 
