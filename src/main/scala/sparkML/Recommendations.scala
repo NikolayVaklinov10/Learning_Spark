@@ -24,6 +24,12 @@ object Recommendations {
     val rawArtistData = spark.read.textFile("src/main/scala/resources/chapter2/profiledata_06-May-2005/artist_data.txt")
     val rawArtistAlias = spark.read.textFile("src/main/scala/resources/chapter2/profiledata_06-May-2005/artist_alias.txt")
 
+    val runRecommender = new RunRecommender(spark)
+    runRecommender.preparation(rawUserArtistData, rawArtistData, rawArtistAlias)
+    runRecommender.model(rawUserArtistData, rawArtistData, rawArtistAlias)
+    runRecommender.evaluate(rawUserArtistData, rawArtistAlias)
+    runRecommender.recommend(rawUserArtistData, rawArtistData, rawArtistAlias)
+
   }
 
   class RunRecommender(private val spark: SparkSession) {
@@ -35,14 +41,14 @@ object Recommendations {
                      rawArtistData: Dataset[String],
                      rawArtistAlias: Dataset[String]): Unit = {
 
-      rawUserArtistData.take(5).foreach(println)
+//      rawUserArtistData.take(5).foreach(println)
 
       val userArtistDF = rawUserArtistData.map { line =>
         val Array(user, artist, _*) = line.split(' ')
         (user.toInt, artist.toInt)
       }.toDF("user", "artist")
 
-      userArtistDF.agg(min("user"), max("user"), min("artist"), max("artist")).show()
+//      userArtistDF.agg(min("user"), max("user"), min("artist"), max("artist")).show()
 
       val artistByID = buildArtistByID(rawArtistData)
       val artistAlias = buildArtistAlias(rawArtistAlias)
