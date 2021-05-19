@@ -183,6 +183,12 @@ object RandomForest {
 
       println(bestModel.asInstanceOf[PipelineModel].stages.last.extractParamMap)
 
+      // the accuracy achieved on CV and Test data
+      println(validatorModel.validationMetrics.max)
+
+      val testAccuracy = multiclassEval.evaluate(bestModel.transform(testData))
+      println(testAccuracy)
+
 
     }
 
