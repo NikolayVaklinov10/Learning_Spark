@@ -37,6 +37,11 @@ object RandomForest {
     data.show()
     data.head
 
+    // Split into 90% train (+ CV), 10% test
+    val Array(trainData, testData) = data.randomSplit(Array(0.9, 0.1))
+    trainData.cache()
+    testData.cache()
+
   }
 
 }
