@@ -1,6 +1,7 @@
 package sparkML
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object RandomForest {
 
@@ -48,6 +49,19 @@ object RandomForest {
 
     import spark.implicits._
 
+    def simpleDecisionTree(trainData: DataFrame, testData: DataFrame): Unit = {
+
+      // all features at one place
+      val inputCols = trainData.columns.filter(_ != "Cover_Type")
+      val assembler = new VectorAssembler()
+        .setInputCols(inputCols)
+        .setOutputCol("featureVector")
+
+      val assembledTrainData = assembler.transform(trainData)
+      assembledTrainData.select("featureVector").show(truncate = false)
+
+
+    }
 
   }
 
