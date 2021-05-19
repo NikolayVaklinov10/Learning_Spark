@@ -1,5 +1,6 @@
 package sparkML
 
+import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
@@ -128,6 +129,24 @@ object RandomForest {
         case (trainProb, cvProb) => trainProb * cvProb
       }.sum
       println(accuracy)
+    }
+
+    def evaluate(trainData: DataFrame, testData: DataFrame): Unit = {
+
+      val inputCols = trainData.columns.filter(_ != "Cover_Type")
+      val assembler = new VectorAssembler().
+        setInputCols(inputCols).
+        setOutputCol("featureVector")
+
+      val classifier = new DecisionTreeClassifier().
+        setSeed(Random.nextLong()).
+        setLabelCol("Cover_Type").
+        setFeaturesCol("featureVector").
+        setPredictionCol("prediction")
+
+      val pipeline = new Pipeline().setStages(Array(assembler, classifier))
+
+
     }
 
 
