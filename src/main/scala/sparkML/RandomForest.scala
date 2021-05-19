@@ -73,6 +73,10 @@ object RandomForest {
       val model = classifier.fit(assembledTrainData)
       println(model.toDebugString)
 
+      // check the importance of each feature to the prediction capabilities of the model
+      model.featureImportances.toArray.zip(inputCols).
+        sorted.reverse.foreach(println)
+
 
 
 
