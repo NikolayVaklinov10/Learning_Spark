@@ -1,6 +1,7 @@
 package sparkML
 
 import org.apache.spark.ml.classification.DecisionTreeClassifier
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -81,6 +82,15 @@ object RandomForest {
 
       predictions.select("Cover_Type", "prediction", "probability").
         show(truncate = false)
+
+      val evaluator = new MulticlassClassificationEvaluator().
+        setLabelCol("Cover_Type").
+        setPredictionCol("prediction")
+
+      val accuracy = evaluator.setMetricName("accuracy").evaluate(predictions)
+      val f1 = evaluator.setMetricName("f1").evaluate(predictions)
+      println(accuracy)
+      println(f1)
 
 
 
