@@ -155,6 +155,11 @@ object RandomForest {
         addGrid(classifier.minInfoGain, Seq(0.0, 0.05)).
         build()
 
+      val multiclassEval = new MulticlassClassificationEvaluator().
+        setLabelCol("Cover_Type").
+        setPredictionCol("prediction").
+        setMetricName("accuracy")
+
 
     }
 
