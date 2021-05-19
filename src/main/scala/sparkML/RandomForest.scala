@@ -109,12 +109,20 @@ object RandomForest {
         orderBy("Cover_Type")
 
       confusionMatrix.show()
+    }
 
-
-
-
+    // evaluating the accuracy
+    def classProbabilities(data: DataFrame): Array[Double] = {
+      val total = data.count()
+      data.groupBy("Cover_Type").count()
+        .orderBy("Cover_Type")
+        .select("count").as[Double]
+        .map(_ / total)
+        .collect()
 
     }
+
+
 
   }
 
