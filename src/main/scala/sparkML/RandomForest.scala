@@ -44,4 +44,11 @@ object RandomForest {
 
   }
 
+  class RunRDF(private val spark: SparkSession) {
+
+    import spark.implicits._
+
+
+  }
+
 }
