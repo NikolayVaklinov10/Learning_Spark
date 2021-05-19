@@ -1,7 +1,10 @@
 package sparkML
 
+import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.{DataFrame, SparkSession}
+
+import scala.util.Random
 
 object RandomForest {
 
@@ -59,6 +62,18 @@ object RandomForest {
 
       val assembledTrainData = assembler.transform(trainData)
       assembledTrainData.select("featureVector").show(truncate = false)
+
+      // the DecisionTree model classifier
+      val classifier = new DecisionTreeClassifier()
+        .setSeed(Random.nextLong())
+        .setLabelCol("Cover_Type")
+        .setFeaturesCol("featureVector")
+        .setPredictionCol("prediction")
+
+      val model = classifier.fit(assembledTrainData)
+      println(model.toDebugString)
+
+
 
 
     }
