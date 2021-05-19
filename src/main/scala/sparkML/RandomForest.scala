@@ -100,6 +100,16 @@ object RandomForest {
       val multiclassMetrics = new MulticlassMetrics(predictionRDD)
       println(multiclassMetrics.confusionMatrix)
 
+      // the DataFrame version of the above code
+      val confusionMatrix = predictions.
+        groupBy("Cover_Type").
+        pivot("prediction", (1 to 7)).
+        count().
+        na.fill(0.0).
+        orderBy("Cover_Type")
+
+      confusionMatrix.show()
+
 
 
 
