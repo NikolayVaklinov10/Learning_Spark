@@ -119,7 +119,15 @@ object RandomForest {
         .select("count").as[Double]
         .map(_ / total)
         .collect()
+    }
 
+    def randomClassifier(trainData: DataFrame, testData: DataFrame): Unit = {
+      val trainPriorProbabilities = classProbabilities(trainData)
+      val testPriorProbabilities = classProbabilities(testData)
+      val accuracy = trainPriorProbabilities.zip(testPriorProbabilities).map {
+        case (trainProb, cvProb) => trainProb * cvProb
+      }.sum
+      println(accuracy)
     }
 
 
