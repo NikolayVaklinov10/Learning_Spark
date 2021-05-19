@@ -77,6 +77,11 @@ object RandomForest {
       model.featureImportances.toArray.zip(inputCols).
         sorted.reverse.foreach(println)
 
+      val predictions = model.transform(assembledTrainData)
+
+      predictions.select("Cover_Type", "prediction", "probability").
+        show(truncate = false)
+
 
 
 
