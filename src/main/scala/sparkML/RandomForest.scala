@@ -1,10 +1,10 @@
 package sparkML
 
-import org.apache.spark.ml.Pipeline
+import org.apache.spark.ml.{Pipeline, PipelineModel}
 import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
-import org.apache.spark.ml.tuning.ParamGridBuilder
+import org.apache.spark.ml.tuning.{ParamGridBuilder, TrainValidationSplit}
 import org.apache.spark.mllib.evaluation.MulticlassMetrics
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -159,6 +159,29 @@ object RandomForest {
         setLabelCol("Cover_Type").
         setPredictionCol("prediction").
         setMetricName("accuracy")
+
+      // bringing the components together
+      val validator = new TrainValidationSplit().
+        setSeed(Random.nextLong()).
+        setEstimator(pipeline).
+        setEvaluator(multiclassEval).
+        setEstimatorParamMaps(paramGrid).
+        setTrainRatio(0.9)
+
+      val validatorModel = validator.fit(trainData)
+
+      val paramsAndMetrics = validatorModel.validationMetrics.
+        zip(validatorModel.getEstimatorParamMaps).sortBy(-_._1)
+
+      paramsAndMetrics.foreach { case (metric, params) =>
+        println(metric)
+        println(params)
+        println()
+      }
+
+      val bestModel = validatorModel.bestModel
+
+      println(bestModel.asInstanceOf[PipelineModel].stages.last.extractParamMap)
 
 
     }
