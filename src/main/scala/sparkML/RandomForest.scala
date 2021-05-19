@@ -4,6 +4,7 @@ import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.ml.tuning.ParamGridBuilder
 import org.apache.spark.mllib.evaluation.MulticlassMetrics
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -145,6 +146,14 @@ object RandomForest {
         setPredictionCol("prediction")
 
       val pipeline = new Pipeline().setStages(Array(assembler, classifier))
+
+      // the built-in support for testing hyperparameters combination
+      val paramGrid = new ParamGridBuilder().
+        addGrid(classifier.impurity, Seq("gini", "entropy")).
+        addGrid(classifier.maxDepth, Seq(1, 20)).
+        addGrid(classifier.maxBins, Seq(40, 300)).
+        addGrid(classifier.minInfoGain, Seq(0.0, 0.05)).
+        build()
 
 
     }
