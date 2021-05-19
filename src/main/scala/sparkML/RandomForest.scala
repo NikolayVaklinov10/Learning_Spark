@@ -3,6 +3,7 @@ package sparkML
 import org.apache.spark.ml.classification.DecisionTreeClassifier
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature.VectorAssembler
+import org.apache.spark.mllib.evaluation.MulticlassMetrics
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 import scala.util.Random
@@ -91,6 +92,14 @@ object RandomForest {
       val f1 = evaluator.setMetricName("f1").evaluate(predictions)
       println(accuracy)
       println(f1)
+
+      // the following compute the confusion matrix
+      val predictionRDD = predictions.
+        select("prediction", "Cover_Type").
+        as[(Double,Double)].rdd
+      val multiclassMetrics = new MulticlassMetrics(predictionRDD)
+      println(multiclassMetrics.confusionMatrix)
+
 
 
 
