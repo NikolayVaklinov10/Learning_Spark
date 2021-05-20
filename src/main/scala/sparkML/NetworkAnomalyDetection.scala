@@ -40,11 +40,16 @@ object NetworkAnomalyDetection {
 
     data.cache()
 
-    data.select("label")
-      .groupBy("label")
-      .count()
-      .orderBy("count")
-      .show(25)
+    val runKMeans = new RunKMeans(spark)
+
+    runKMeans.clusteringTake0(data)
+    runKMeans.clusteringTake1(data)
+    runKMeans.clusteringTake2(data)
+    runKMeans.clusteringTake3(data)
+    runKMeans.clusteringTake4(data)
+    runKMeans.buildAnomalyDetector(data)
+
+    data.unpersist()
 
 
   }
